@@ -1,23 +1,33 @@
 "use client";
 
 import { useMusicDispatch, useMusicSelector } from "@/redux/hooks";
-import { setCurrentTime, setSongDuration } from "@/redux/player-slice";
+import {
+  playNextSong,
+  playRandomSong,
+  setCurrentTime,
+  setPlaying,
+  setSongDuration,
+} from "@/redux/player-slice";
 import { useEffect, useRef } from "react";
 
 export default function Audio() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const dispatch = useMusicDispatch();
   const { isPlaying, activeSong } = useMusicSelector((state) => state.music);
-  const { currentTime } = useMusicSelector((state) => state.music);
+  const { currentTime, isRepeating, isShuffling } = useMusicSelector(
+    (state) => state.music
+  );
 
   useEffect(() => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play();
-      } else {
-        audioRef.current.pause();
+    (async () => {
+      if (audioRef.current) {
+        if (isPlaying) {
+          await audioRef.current.play();
+        } else {
+          await audioRef.current.pause();
+        }
       }
-    }
+    })();
   }, [isPlaying]);
 
   useEffect(() => {
@@ -35,12 +45,30 @@ export default function Audio() {
       }
     };
 
+    const handleNextSong = async () => {
+      if (audioElement) {
+        await dispatch(setPlaying(false));
+        if (isRepeating) {
+          audioElement.currentTime = 0;
+          await dispatch(setCurrentTime(0));
+        } else if (isShuffling) {
+          console.log("Shuffling");
+          await dispatch(playRandomSong());
+        } else {
+          await dispatch(playNextSong());
+        }
+        await dispatch(setPlaying(true));
+      }
+    };
+
     audioElement?.addEventListener("timeupdate", handleTimeUpdate);
     audioElement?.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audioElement?.addEventListener("ended", handleNextSong);
 
     return () => {
       audioElement?.removeEventListener("timeupdate", handleTimeUpdate);
       audioElement?.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audioElement?.removeEventListener("ended", handleNextSong);
     };
   }, [activeSong]);
 
@@ -67,7 +95,7 @@ export default function Audio() {
 
   return (
     <div className="w-1/3">
-      <audio ref={audioRef} src={activeSong.url}></audio>
+      <audio ref={audioRef} src={`/${activeSong.url}`}></audio>
     </div>
   );
 }

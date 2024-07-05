@@ -31,8 +31,8 @@ export const musicSlice = createSlice({
   name: "player",
   initialState,
   reducers: {
-    setActiveSong: (state, action) => {
-      state.activeSong = action.payload;
+    setActiveSong: (state, action: PayloadAction<number>) => {
+      state.activeSong = songs[action.payload];
     },
     setPlaying: (state, action: PayloadAction<boolean>) => {
       state.isPlaying = action.payload;
@@ -47,22 +47,26 @@ export const musicSlice = createSlice({
     },
     playNextSong: (state) => {
       if (state.activeSong.id + 1 >= songs.length) {
-        
         state.activeSong = songs[0];
       } else {
-        state.activeSong = songs[state.activeSong.id+1];
+        state.activeSong = songs[state.activeSong.id + 1];
       }
     },
     playPrevSong: (state) => {
-      if (state.activeSong.id === 0) state.activeSong = songs[songs.length-1];
+      if (state.activeSong.id === 0) state.activeSong = songs[songs.length - 1];
       else state.activeSong = songs[state.activeSong.id - 1];
     },
     setSongDuration: (state, action: PayloadAction<number>) => {
       state.songDuration = action.payload;
     },
+    playRandomSong: (state) => {
+      const randomIndex = Math.floor(Math.random() * songs.length);
+      state.activeSong = songs[randomIndex];
+    },
+
     setCurrentTime: (state, action: PayloadAction<number>) => {
-      state.currentTime = action.payload
-    }
+      state.currentTime = action.payload;
+    },
   },
 });
 
@@ -74,6 +78,7 @@ export const {
   setShuffling,
   playNextSong,
   playPrevSong,
+  playRandomSong,
   setSongDuration,
   setCurrentTime,
 } = musicSlice.actions;

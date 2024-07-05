@@ -35,12 +35,12 @@ export default function MusicDuration() {
         className="w-[90%] h-1 bg-white/20 rounded-full cursor-pointer"
         onClick={handleClick}
       >
-        {songDuration && currentTime && (
+        {songDuration && currentTime ? (
           <div
             className={`h-full min-h-1 bg-green-500/60 rounded-md`}
             style={{ width: `${width}%` }}
           ></div>
-        )}
+        ) : null}
       </div>
 
       {songDuration ? (

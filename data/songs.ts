@@ -27,5 +27,12 @@ export const songs: TMusicDetails[] = [
     artist: "SIAMES",
     cover: "https://i.ytimg.com/vi/lX44CAz-JhU/sddefault.jpg?sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg&rs=AMzJL3nW_dau8RlGM2vwFzSRceBm4vck7w",
     url: "the-wolf.mp3"
+  },
+  {
+    id: 3,
+    title: "Landslide",
+    artist: "Oh Wonder",
+    cover: "https://lh3.googleusercontent.com/VV7Fw-T_TNIN703SVcDUOLmy8wNSbLxuiQiBlPKwN9zRqmp7GxbB-Dcf3n9DWYPkX3E3jOA4meh5NyEb=w544-h544-l90-rj",
+    url: "landslide-oh-wonder.mp3"
   }
 ]
