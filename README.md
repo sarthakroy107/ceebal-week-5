@@ -3,6 +3,7 @@
 - Advance music player with **Skip to Next, Play Previous, Pause, Play, Shuffle, Repeat and Update Play Time** fucntionalities.
 - Playlist for song
 - Fuzzy search
+- Albums
 - Spotify like UI
 ---
 #### Home page
